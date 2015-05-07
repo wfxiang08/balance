@@ -1,26 +1,26 @@
 package backends
 
 import (
-    "log"
+	"log"
 )
 
 type backend struct {
-    hostname string
+	hostname string
 }
 
 func (b *backend) String() string {
-    return b.hostname
+	return b.hostname
 }
 
 type Backend interface {
-    String() string
+	String() string
 }
 
 type Backends interface {
-    Choose() Backend
-    Len() int
-    Add(string)
-    Remove(string)
+	Choose() Backend
+	Len() int
+	Add(string)
+	Remove(string)
 }
 
 type Factory func([]string) Backends
@@ -28,9 +28,11 @@ type Factory func([]string) Backends
 var factories = make(map[string]Factory)
 
 func Build(algorithm string, specs []string) Backends {
-    factory, found := factories[algorithm]
-    if !found {
-        log.Fatalf("balance algorithm %s not supported", algorithm)
-    }
-    return factory(specs)
+	// 从factories中取出对应的算法
+	factory, found := factories[algorithm]
+	if !found {
+		log.Fatalf("balance algorithm %s not supported", algorithm)
+	}
+	// 创建Factory
+	return factory(specs)
 }
